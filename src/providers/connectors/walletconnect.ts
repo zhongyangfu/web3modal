@@ -6,7 +6,8 @@ export interface IWalletConnectConnectorOptions
   rpc?: { [chainId: number]: string };
   bridge?: string;
   qrcode?: boolean;
-  qrcodeModalOptions?: { mobileLinks?: string[] };
+  qrcodeModalOptions?: { mobileLinks?: string[] };    
+  pollingInterval?: number;
 }
 
 const ConnectToWalletConnect = (
@@ -19,7 +20,7 @@ const ConnectToWalletConnect = (
     let infuraId = "";
     let rpc = undefined;
     let chainId = 1;
-    let qrcodeModalOptions = undefined;
+    let pollingInterval = 1500000;
 
     if (opts) {
       bridge = opts.bridge || bridge;
@@ -29,6 +30,7 @@ const ConnectToWalletConnect = (
       chainId =
         opts.network && getChainId(opts.network) ? getChainId(opts.network) : 1;
       qrcodeModalOptions = opts.qrcodeModalOptions || undefined;
+      pollingInterval = opts.pollingInterval || 1500000;
     }
 
     const provider = new WalletConnectProvider({
@@ -37,6 +39,7 @@ const ConnectToWalletConnect = (
       infuraId,
       rpc,
       chainId,
+      pollingInterval,
       qrcodeModalOptions
     });
     try {
